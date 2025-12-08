@@ -1,0 +1,10 @@
+# Ignore environment settings
+node_modules/
+.env
+
+# Ignore build/cache
+dist/
+.cache/
+
+# Ignore Firebase local files
+.firebase/
