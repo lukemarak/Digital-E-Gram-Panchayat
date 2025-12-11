@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Staff Dashboard - Digital E-Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="site-brand">
+        <div class="logo">EG</div>
+        <div class="title">
+          <div class="name">Digital E-Gram Panchayat</div>
+          <small class="tag">Staff Dashboard</small>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div id="userBadge" class="badge">Not signed</div>
+        <button id="logoutBtn" class="btn outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="main-grid">
+      <!-- Left: Pending applications -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Pending Applications</div>
+          <small class="note">Review and take action</small>
+        </div>
+
+        <div id="pendingList" style="margin-top:12px;">
+          <p class="helper">Loading pending applications...</p>
+        </div>
+      </section>
+
+      <!-- Right: Application details & actions -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Application Details</div>
+          <small class="note">Click an application to view details</small>
+        </div>
+
+        <div id="appDetails" style="margin-top:12px;">
+          <p class="helper">Select an application from the left to view details.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="note">Designed by Eproneer · Digital E-Gram Panchayat</small>
+    </div>
+  </footer>
+
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <!-- Firebase init -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Staff logic -->
+  <script src="js/staff.js"></script>
+</body>
+</html>

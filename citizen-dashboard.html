@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Citizen Dashboard - Digital E-Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="site-brand">
+        <div class="logo">EG</div>
+        <div class="title">
+          <div class="name">Digital E-Gram Panchayat</div>
+          <small class="tag">Citizen Dashboard</small>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div id="userBadge" class="badge">Not signed</div>
+        <button id="logoutBtn" class="btn outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="main-grid">
+      <!-- Left: Apply form -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Apply for Certificate</div>
+          <small class="note">Submit basic requests (residence/income/birth)</small>
+        </div>
+
+        <form id="applyForm" class="mt-8">
+          <div class="form-row">
+            <label class="form-label" for="certType">Certificate Type</label>
+            <select id="certType" required>
+              <option value="">Select certificate</option>
+              <option value="residence">Residence Certificate</option>
+              <option value="income">Income Certificate</option>
+              <option value="birth">Birth Certificate</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="fullName">Full Name</label>
+            <input id="fullName" type="text" placeholder="Your full name" required />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="address">Address</label>
+            <input id="address" type="text" placeholder="Your address" required />
+          </div>
+
+          <div class="form-actions">
+            <button id="applyBtn" class="btn" type="submit">Submit Application</button>
+          </div>
+
+          <p id="applyMsg" class="helper" style="min-height:18px;"></p>
+        </form>
+      </section>
+
+      <!-- Right: Applications list -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">My Applications</div>
+          <small class="note">Recent requests and their status</small>
+        </div>
+
+        <div id="appsList" style="margin-top:12px;">
+          <p class="helper">Loading your applications...</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="note">Designed by Eproneer · Digital E-Gram Panchayat</small>
+    </div>
+  </footer>
+
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <!-- Your Firebase init (must set window.auth & window.db) -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Dashboard logic -->
+  <script src="js/citizen.js"></script>
+</body>
+</html>

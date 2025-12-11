@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Register - Digital E-Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card card">
+      <div class="card-header">
+        <div>
+          <h1 class="card-title">Register (Citizen)</h1>
+          <small class="note">Create an account to apply for certificates & send grievances</small>
+        </div>
+      </div>
+
+      <main>
+        <form id="registerForm" class="login-form">
+          <div class="form-row">
+            <label class="form-label" for="name">Full name</label>
+            <input id="name" type="text" placeholder="Your full name" required />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="village">Village / Gram</label>
+            <input id="village" type="text" placeholder="Jyrmang" required />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="password">Password</label>
+            <input id="password" type="password" placeholder="Choose a strong password" required />
+          </div>
+
+          <div class="form-actions">
+            <button id="registerBtn" class="btn" type="submit">Create account</button>
+            <a class="btn outline" href="login.html">Back to Login</a>
+          </div>
+
+          <p id="registerMsg" class="helper" style="min-height:18px"></p>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Your Firebase init -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Register logic -->
+  <script src="js/register.js"></script>
+</body>
+</html>

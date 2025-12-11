@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Dashboard - Digital E-Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="site-brand">
+        <div class="logo">EG</div>
+        <div class="title">
+          <div class="name">Digital E-Gram Panchayat</div>
+          <small class="tag">Admin Dashboard</small>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div id="userBadge" class="badge">Not signed</div>
+        <button id="logoutBtn" class="btn outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="main-grid">
+      <!-- Left: Users & Notices -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Users</div>
+          <small class="note">View users and change roles</small>
+        </div>
+
+        <div id="usersList" style="margin-top:12px;">
+          <p class="helper">Loading users...</p>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Create Notice</div>
+              <small class="note">Publish announcement to citizens</small>
+            </div>
+
+            <div style="margin-top:8px;">
+              <div class="form-row">
+                <label class="form-label" for="noticeTitle">Title</label>
+                <input id="noticeTitle" type="text" placeholder="Notice title" />
+              </div>
+              <div class="form-row">
+                <label class="form-label" for="noticeBody">Body</label>
+                <textarea id="noticeBody" placeholder="Notice content"></textarea>
+              </div>
+              <div class="form-actions">
+                <button id="publishNoticeBtn" class="btn">Publish Notice</button>
+              </div>
+              <div id="noticeMsg" class="helper"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: All applications -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">All Applications</div>
+          <small class="note">Overview of all requests</small>
+        </div>
+
+        <div id="allApps" style="margin-top:12px;">
+          <p class="helper">Loading applications...</p>
+        </div>
+      </section>
+    </div>
+    <!-- for adding staff  -->
+     <!-- Invite Staff Card (insert above Create Notice) -->
+<div class="card" style="margin-top:12px;">
+  <div class="card-header">
+    <div class="card-title">Invite Staff / Admin</div>
+    <small class="note">Send an invitation - user will register and receive the assigned role</small>
+  </div>
+
+  <div style="margin-top:8px;">
+    <div class="form-row">
+      <label class="form-label" for="inviteName">Full name</label>
+      <input id="inviteName" type="text" placeholder="Staff full name" />
+    </div>
+
+    <div class="form-row">
+      <label class="form-label" for="inviteEmail">Email</label>
+      <input id="inviteEmail" type="email" placeholder="staff@example.com" />
+    </div>
+
+    <div class="form-row">
+      <label class="form-label" for="inviteRole">Role</label>
+      <select id="inviteRole">
+        <option value="staff">Staff</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button id="inviteBtn" class="btn">Create Invitation</button>
+      <button id="refreshInvitesBtn" class="btn outline">Refresh</button>
+    </div>
+
+    <div id="inviteMsg" class="helper" style="margin-top:8px;"></div>
+
+    <div style="margin-top:12px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Pending Invitations</div>
+          <small class="note">Invites awaiting registration</small>
+        </div>
+        <div id="invitesList" style="margin-top:8px;">
+          <p class="helper">Loading invitations...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="note">Designed by Eproneer · Digital E-Gram Panchayat</small>
+    </div>
+  </footer>
+
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <!-- Firebase init -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Admin logic -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

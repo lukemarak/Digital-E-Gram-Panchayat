@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Digital E-Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Digital E-Gram Panchayat</h1>
+      <p class="tagline">Smart, simple local governance — citizen services, grievances, and notices.</p>
+    </div>
+  </header>
+
+  <main class="wrap main-grid">
+    <section class="card">
+      <h2>Get started</h2>
+      <p>Choose one of the following actions:</p>
+      <div class="actions">
+        <a class="btn" href="login.html">Login</a>
+        <a class="btn outline" href="register.html">Register (Citizen)</a>
+        <a class="btn subtle" href="README.md" target="_blank">Project README</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Quick links</h2>
+      <ul class="links">
+        <li><a href="citizen-dashboard.html">Citizen Dashboard</a></li>
+        <li><a href="staff-dashboard.html">Staff Dashboard</a></li>
+        <li><a href="admin-dashboard.html">Admin Dashboard</a></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Developer</h2>
+      <p>If you are the developer and already authenticated, this page will redirect you to the correct dashboard automatically.</p>
+      <p class="note">If you see a directory listing in your hosting, replace it with this file as the root `index.html`.</p>
+    </section>
+
+    <section class="card small" id="statusCard">
+      <h3>Firebase status</h3>
+      <pre id="debug" class="debug">Checking...</pre>
+      <button id="refreshBtn" class="btn outline">Refresh status</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>Designed by Eproneer — Digital E-Gram Panchayat · Unified Mentor Internship</small>
+    </div>
+  </footer>
+
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <!-- Your firebase-config.js MUST define window.auth and window.db -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Small script: show firebase status and redirect by role if logged in -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const debug = document.getElementById('debug');
+      const refreshBtn = document.getElementById('refreshBtn');
+
+      function write(msg) {
+        const time = new Date().toLocaleTimeString();
+        debug.textContent = `[${time}] ${msg}\n` + debug.textContent;
+      }
+
+      // Quick status check
+      try {
+        const hasAuth = typeof window.auth !== 'undefined';
+        const hasDb = typeof window.db !== 'undefined';
+
+        write('Auth available: ' + (hasAuth ? 'Yes' : 'No'));
+        write('Firestore available: ' + (hasDb ? 'Yes' : 'No'));
+
+        if (!hasAuth || !hasDb) {
+          write('Firebase not fully initialized. Ensure js/firebase-config.js loads and sets window.auth & window.db.');
+          return;
+        }
+
+        // If logged in, fetch role and redirect
+        window.auth.onAuthStateChanged(async (user) => {
+          if (!user) {
+            write('No user signed in.');
+            return;
+          }
+
+          write('Signed in as UID: ' + user.uid);
+
+          try {
+            const doc = await window.db.collection('users').doc(user.uid).get();
+            if (!doc.exists) {
+              write('No /users/{uid} document found — redirecting to citizen dashboard by default.');
+              window.location.href = 'citizen-dashboard.html';
+              return;
+            }
+
+            const data = doc.data();
+            const role = data.role || 'citizen';
+            write('Role: ' + role);
+
+            // redirect according to role
+            if (role === 'admin') {
+              window.location.href = 'admin-dashboard.html';
+            } else if (role === 'staff') {
+              window.location.href = 'staff-dashboard.html';
+            } else {
+              window.location.href = 'citizen-dashboard.html';
+            }
+          } catch (err) {
+            console.error(err);
+            write('Error reading user role: ' + (err.message || err));
+            // fallback
+            window.location.href = 'citizen-dashboard.html';
+          }
+        });
+
+      } catch (err) {
+        console.error(err);
+        write('Unexpected error: ' + (err.message || err));
+      }
+
+      refreshBtn.addEventListener('click', () => location.reload());
+    });
+  </script>
+</body>
+</html>
