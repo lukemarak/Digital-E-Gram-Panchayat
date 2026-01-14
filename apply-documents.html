@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Apply – Upload Documents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <strong>Digital E-Gram Panchayat</strong>
+    <span class="badge">Upload Documents</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h3 id="serviceTitle">Required Documents</h3>
+  <small class="note">Upload clear PDF or image files</small>
+
+  <form id="docForm" class="mt-8">
+
+    <div class="form-row">
+      <label id="docLabel1" class="form-label"></label>
+      <input type="file" id="docFile1" accept=".pdf,image/*" required />
+    </div>
+
+    <div class="form-row">
+      <label id="docLabel2" class="form-label"></label>
+      <input type="file" id="docFile2" accept=".pdf,image/*" required />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" type="submit">Upload & Continue</button>
+    </div>
+
+    <p id="msg" class="helper"></p>
+  </form>
+
+</section>
+
+</main>
+
+<script src="js/apply-documents.js"></script>
+</body>
+</html>

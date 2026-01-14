@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Apply – Person Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <strong>Digital E-Gram Panchayat</strong>
+    <span class="badge">Person Details</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h3>Person Details</h3>
+
+  <form id="personForm">
+
+    <!-- PERSONAL DETAILS -->
+    <h4 class="section-title">Personal Information</h4>
+
+    <input id="fullName" placeholder="Full Name" required />
+    <input id="fatherName" placeholder="Father's Name" />
+    <input id="motherName" placeholder="Mother's Name" />
+    <input id="guardianName" placeholder="Guardian Name (if any)" />
+
+    <input id="dob" type="date" />
+    <select id="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+
+    <input id="contactNo" placeholder="Contact Number" required />
+    <input id="email" type="email" placeholder="Email" />
+
+    <!-- CURRENT ADDRESS -->
+    <h4 class="section-title">Current Address</h4>
+
+    <input id="curHouse" placeholder="House No" required />
+    <input id="curVillage" placeholder="Village / Locality" required />
+    <input id="curBlock" placeholder="Block" required />
+    <input id="curPO" placeholder="Post Office" required />
+    <input id="curDistrict" placeholder="District" required />
+    <input id="curState" placeholder="State" required />
+    <input id="curCountry" value="India" required />
+
+    <!-- SAME AS -->
+    <label class="checkbox">
+      <input type="checkbox" id="sameAddress" checked />
+      Permanent Address same as Current Address
+    </label>
+
+    <!-- PERMANENT ADDRESS -->
+    <h4 class="section-title">Permanent Address</h4>
+
+    <input id="perHouse" placeholder="House No" />
+    <input id="perVillage" placeholder="Village / Locality" />
+    <input id="perBlock" placeholder="Block" />
+    <input id="perPO" placeholder="Post Office" />
+    <input id="perDistrict" placeholder="District" />
+    <input id="perState" placeholder="State" />
+    <input id="perCountry" value="India" />
+
+    <div class="form-actions">
+      <button class="btn" type="submit">Continue</button>
+    </div>
+
+    <p id="msg" class="helper"></p>
+
+  </form>
+</section>
+
+</main>
+
+<script src="js/apply-person.js"></script>
+</body>
+</html>

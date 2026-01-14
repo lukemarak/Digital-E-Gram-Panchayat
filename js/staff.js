@@ -174,6 +174,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // After approved 
+  window.approveApplication = async function(appId) {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Not logged in.");
+        return;
+      }
+
+      // 1️⃣ Get staff user profile
+      const staffDoc = await db.collection("users").doc(user.uid).get();
+      const staffData = staffDoc.data();
+      const staffUserName = staffData.name || "Panchayat Officer";
+
+      // 2️⃣ Get application type
+      const appDoc = await db.collection("applications").doc(appId).get();
+      const applicationType = appDoc.data().type;
+
+      // 3️⃣ UPDATE APPLICATION (THIS IS WHERE YOUR CODE GOES)
+      await db.collection("applications").doc(appId).update({
+        status: "approved",
+
+        certificate: {
+          issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          certificateNo: "DGP-" + Date.now(),
+          officer: staffUserName,
+          type: applicationType
+        },
+
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        approvedBy: user.uid
+      });
+
+      alert("Application approved successfully!");
+
+      // Optional: reload after approval
+      if (typeof loadPendingApplications === "function") {
+        loadPendingApplications();
+      }
+
+    } catch (err) {
+      console.error("Approval failed:", err);
+      alert("Error approving application.");
+    }
+  };
+
+
+
   function capitalize(s) {
     if (!s) return s;
     return s.charAt(0).toUpperCase() + s.slice(1);

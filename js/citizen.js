@@ -1,161 +1,155 @@
-// js/citizen.js
 document.addEventListener("DOMContentLoaded", () => {
-  // Simple guards
-  if (typeof window.auth === "undefined" || typeof window.db === "undefined") {
-    console.error("Firebase not initialized (auth/db missing).");
-    alert("Internal error: Firebase not initialized. Check console.");
+
+  if (!window.auth || !window.db) {
+    alert("Firebase not initialized");
     return;
   }
 
-  const logoutBtn = document.getElementById("logoutBtn");
+  /* ELEMENTS */
   const userBadge = document.getElementById("userBadge");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-  const applyForm = document.getElementById("applyForm");
-  const applyBtn = document.getElementById("applyBtn");
-  const applyMsg = document.getElementById("applyMsg");
-  const appsList = document.getElementById("appsList");
+  const serviceForm = document.getElementById("serviceForm");
+  const serviceTypeEl = document.getElementById("serviceType");
+  const serviceMsg = document.getElementById("serviceMsg");
+
+  const personSection = document.getElementById("personSection");
+  const personForm = document.getElementById("personForm");
+  const personMsg = document.getElementById("personMsg");
+
+  const documentSection = document.getElementById("documentSection");
+  const docForm = document.getElementById("docForm");
+  const docLabel1 = document.getElementById("docLabel1");
+  const docLabel2 = document.getElementById("docLabel2");
+  const docMsg = document.getElementById("docMsg");
 
   let currentUser = null;
+  let selectedService = null;
+  let personData = {};
+  let documentPaths = [];
 
-  // Protect route & initialize
-  window.auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-      // Not logged in -> send to login
-      window.location.href = "login.html";
-      return;
-    }
-
+  /* AUTH */
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) return location.href = "login.html";
     currentUser = user;
-    // show basic badge (uid while we fetch user doc)
-    userBadge.textContent = user.email || "Signed in";
-
-    // Try to read user profile from /users/{uid}
-    try {
-      const doc = await window.db.collection("users").doc(user.uid).get();
-      if (doc.exists) {
-        const data = doc.data();
-        const display = `${data.name || user.email} • ${data.village || ""}`;
-        userBadge.textContent = display;
-      }
-    } catch (err) {
-      console.warn("Could not read /users doc:", err);
-    }
-
-    // Load user's applications
-    loadApplications();
+    if (userBadge) userBadge.textContent = user.email;
   });
 
-  // Logout
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      await window.auth.signOut();
-      window.location.href = "login.html";
-    });
-  }
+  logoutBtn.onclick = async () => {
+    await auth.signOut();
+    location.href = "login.html";
+  };
 
-  // Submit application
-  if (applyForm) {
-    applyForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!currentUser) {
-        applyMsg.textContent = "You must be signed in.";
-        return;
-      }
+  /* STEP 1 — SERVICE */
+  serviceForm.addEventListener("submit", e => {
+    e.preventDefault();
 
-      const type = document.getElementById("certType").value;
-      const fullName = document.getElementById("fullName").value.trim();
-      const address = document.getElementById("address").value.trim();
-
-      if (!type || !fullName || !address) {
-        applyMsg.textContent = "Please fill all fields.";
-        return;
-      }
-
-      applyBtn.disabled = true;
-      applyBtn.textContent = "Submitting...";
-
-      try {
-        await window.db.collection("applications").add({
-          citizenId: currentUser.uid,
-          type,
-          status: "pending",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          details: { fullName, address }
-        });
-
-        applyMsg.textContent = "Application submitted successfully.";
-        applyForm.reset();
-        // refresh list
-        await loadApplications();
-      } catch (err) {
-        console.error("Error submitting application:", err);
-        applyMsg.textContent = "Failed to submit. Try again.";
-      } finally {
-        applyBtn.disabled = false;
-        applyBtn.textContent = "Submit Application";
-      }
-    });
-  }
-
-  // Load applications for current user
-  async function loadApplications() {
-    if (!currentUser) {
-      appsList.innerHTML = `<p class="helper">Sign in to see your applications.</p>`;
+    selectedService = serviceTypeEl.value;
+    if (!selectedService) {
+      serviceMsg.textContent = "Select a service.";
       return;
     }
 
-    appsList.innerHTML = `<p class="helper">Loading your applications...</p>`;
+    configurePersonForm(selectedService);
+    personSection.style.display = "block";
+    personSection.scrollIntoView({ behavior: "smooth" });
+
+    serviceMsg.textContent = "Service selected.";
+  });
+
+  /* STEP 2 — PERSON */
+  personForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    personData = {
+      fullName: pFullName.value.trim(),
+      fatherName: pFather.value.trim(),
+      motherName: pMother.value.trim(),
+      guardianName: pGuardian.value.trim(),
+      dob: pDob.value,
+      gender: pGender.value,
+      contact: pContact.value.trim()
+    };
+
+    if (!personData.fullName) {
+      personMsg.textContent = "Full name required.";
+      return;
+    }
+
+    setupDocuments(selectedService);
+    documentSection.style.display = "block";
+    documentSection.scrollIntoView({ behavior: "smooth" });
+
+    personMsg.textContent = "Person details saved.";
+  });
+
+  /* STEP 3 — DOCUMENTS */
+  docForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    docMsg.textContent = "Uploading...";
 
     try {
-      // Query applications where citizenId == uid, newest first
-      const snapshot = await window.db.collection("applications")
-        .where("citizenId", "==", currentUser.uid)
-        .orderBy("createdAt", "desc")
-        .get();
-
-      if (snapshot.empty) {
-        appsList.innerHTML = `<p class="helper">You have no applications yet.</p>`;
+      const f1 = docFile1.files[0];
+      const f2 = docFile2.files[0];
+      if (!f1 || !f2) {
+        docMsg.textContent = "Both documents required.";
         return;
       }
 
-      // Build HTML list
-      const container = document.createElement("div");
-      container.className = "applications";
+      const appTempId = Date.now(); // temp id for folder
+      const p1 = await uploadFile(f1, appTempId, "doc1");
+      const p2 = await uploadFile(f2, appTempId, "doc2");
 
-      snapshot.forEach(doc => {
-        const d = doc.data();
-        const createdAt = d.createdAt ? d.createdAt.toDate().toLocaleString() : "—";
-        const status = (d.status || "pending");
-        const details = d.details || {};
+      documentPaths = [p1, p2];
 
-        const item = document.createElement("div");
-        item.className = "card";
-        item.style.marginBottom = "10px";
-        item.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <strong>${capitalize(d.type || "application")}</strong>
-              <div class="note">${details.fullName || ""} · ${details.address || ""}</div>
-            </div>
-            <div style="text-align:right;">
-              <div class="badge">${status.toUpperCase()}</div>
-              <div class="helper" style="margin-top:6px;font-size:12px;">${createdAt}</div>
-            </div>
-          </div>
-        `;
-        container.appendChild(item);
-      });
+      docMsg.textContent =
+        "Documents uploaded successfully. Ready to submit application.";
 
-      appsList.innerHTML = "";
-      appsList.appendChild(container);
+      console.log("DOCUMENT PATHS:", documentPaths);
+
+      /*
+        STEP 4:
+        Save application to Firestore
+      */
+
     } catch (err) {
-      console.error("Error loading applications:", err);
-      appsList.innerHTML = `<p class="helper">Failed to load applications.</p>`;
+      console.error(err);
+      docMsg.textContent = "Upload failed.";
     }
+  });
+
+  /* HELPERS */
+
+  function configurePersonForm(service) {
+    personForm.reset();
+    pFather.required = service !== "income";
+    pDob.required = service === "birth";
   }
 
-  function capitalize(s) {
-    if (!s) return s;
-    return s.charAt(0).toUpperCase() + s.slice(1);
+  function setupDocuments(service) {
+    const map = {
+      prc: ["Residence Proof", "ID Proof"],
+      scst: ["Caste Proof", "Residence Proof"],
+      birth: ["Birth Proof", "Parent ID Proof"],
+      income: ["Income Proof", "Residence Proof"]
+    };
+    [docLabel1.textContent, docLabel2.textContent] = map[service];
   }
+
+  async function uploadFile(file, appId, label) {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("appId", appId);
+    fd.append("label", label);
+
+    const res = await fetch("upload.php", {
+      method: "POST",
+      body: fd
+    });
+
+    const data = await res.json();
+    if (!data.success) throw new Error("Upload failed");
+    return data.path;
+  }
+
 });

@@ -1,11 +1,12 @@
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT",
-  projectId: "PROJECT_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_",
-  appId: "YOUR_"
+  apiKey: "AIzaSyDa1gXweFRh1IxiyBEkr7l4JPPtNyXZg5k",
+  authDomain: "digital-e-gram-panchayat-fa1eb.firebaseapp.com",
+  projectId: "digital-e-gram-panchayat-fa1eb",
+  // storageBucket: "digital-e-gram-panchayat-fa1eb.firebasestorage.app",
+  storageBucket: "digital-e-gram-panchayat-fa1eb.appspot.com",
+  messagingSenderId: "1005035404468",
+  appId: "1:1005035404468:web:86030bfbb4e8531c702be1"
 };
 
 // Initialize Firebase

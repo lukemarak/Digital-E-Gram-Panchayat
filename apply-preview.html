@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Apply – Preview & Submit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <strong>Digital E-Gram Panchayat</strong>
+    <span class="badge">Preview & Submit</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h3>Application Preview</h3>
+  <small class="note">Verify details carefully before final submission</small>
+
+  <div id="previewContent" class="mt-8"></div>
+
+  <div class="form-actions">
+    <button id="submitBtn" class="btn">Submit Application</button>
+  </div>
+
+  <p id="msg" class="helper"></p>
+</section>
+
+</main>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/apply-preview.js"></script>
+
+</body>
+</html>
