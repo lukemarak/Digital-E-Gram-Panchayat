@@ -3,8 +3,10 @@
 header("Content-Type: application/json");
 
 // Base folder on server
+
 $baseDir = __DIR__ . "/uploads/applications/";
-$baseUrl = "/uploads/applications/";
+$baseUrl = "uploads/applications/";
+
 
 // Validate request
 if (!isset($_FILES["file"], $_POST["appId"], $_POST["label"])) {
