@@ -1,7 +1,26 @@
 🏛️ Digital E-Gram Panchayat
 
 A smart governance web-based system designed to digitize essential Panchayat services and make administration more transparent, efficient, and citizen-friendly.
+## 🌐 Live Demo
+[Visit DEGP](https://rtdemo.in/digital_e_gram_panchayat)
+---
 
+## 🔑 Login Credentials (Demo Accounts)
+
+
+**👨‍⚕️ Citizen Login** 
+//username: test@example.com
+//Password: 123456
+
+**👩‍💼 Admin Login** 
+//username: admin@degp.com
+//Password: 741852
+
+**👨‍⚕️ Staff Login** 
+//username: lukemarak@gmail.com
+//password: 456321
+
+> ⚠️ These demo credentials are for testing purposes only.
 📌 Project Overview
 
 The Digital E-Gram Panchayat enables villagers to access government services online such as certificate applications, grievance submission, public notices, and scheme updates — eliminating physical paperwork and delays.
